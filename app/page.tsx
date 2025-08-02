@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone, MessageCircle, Star, Car, Sparkles, Shield, Clock, MapPin, Zap, Wrench } from 'lucide-react';
+import Image from 'next/image';
 
 interface Service {
   id: number;
@@ -23,7 +24,63 @@ interface AddOn {
   description: string;
 }
 
+interface Review {
+  id: string;
+  author_name: string;
+  rating: number;
+  text: string;
+  time: number;
+  profile_photo_url?: string;
+}
+
 export default function Home(): React.ReactElement {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Mock reviews for now - replace with actual API call
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch('/api/reviews');
+        const data = await response.json();
+        setReviews(data.reviews);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        // Fallback to mock data if API fails
+        setReviews([
+          {
+            id: '1',
+            author_name: 'Sarah Johnson',
+            rating: 5,
+            text: 'Robinson did an amazing job on my car! The interior was spotless and the exterior looked brand new. Very professional and reasonably priced.',
+            time: Date.now() - 86400000, // 1 day ago
+            profile_photo_url: undefined
+          },
+          {
+            id: '2',
+            author_name: 'Mike Chen',
+            rating: 5,
+            text: 'Excellent service! My SUV looks incredible after the full detail. Robinson was punctual, professional, and the results exceeded my expectations.',
+            time: Date.now() - 172800000, // 2 days ago
+            profile_photo_url: undefined
+          },
+          {
+            id: '3',
+            author_name: 'Jennifer Davis',
+            rating: 5,
+            text: 'Best mobile detailing service I\'ve ever used. Robinson was thorough, professional, and my car looks better than when I first bought it!',
+            time: Date.now() - 259200000, // 3 days ago
+            profile_photo_url: undefined
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
   const services: Service[] = [
     {
       id: 1,
@@ -43,7 +100,7 @@ export default function Home(): React.ReactElement {
         "Leather conditioner INCLUDED",
         "Pet hair removal INCLUDED"
       ],
-      icon: <Car className="w-8 h-8" />
+      icon: <Car className="w-6 h-6" />
     },
     {
       id: 2,
@@ -61,7 +118,7 @@ export default function Home(): React.ReactElement {
         "Wheels & tire shine",
         "Ceramic wax protection INCLUDED"
       ],
-      icon: <Sparkles className="w-8 h-8" />
+      icon: <Sparkles className="w-6 h-6" />
     },
     {
       id: 3,
@@ -79,7 +136,7 @@ export default function Home(): React.ReactElement {
         "Professional-grade results inside and out",
         "Comprehensive vehicle transformation"
       ],
-      icon: <Shield className="w-8 h-8" />
+      icon: <Shield className="w-6 h-6" />
     }
   ];
 
@@ -134,20 +191,63 @@ export default function Home(): React.ReactElement {
     }
   };
 
+  const scrollToServices = (): void => {
+    const servicesSection = document.getElementById('services');
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const formatTimeAgo = (timestamp: number): string => {
+    const now = Date.now();
+    const diff = now - timestamp;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor(diff / (1000 * 60));
+
+    if (days > 0) return `${days} day${days === 1 ? '' : 's'} ago`;
+    if (hours > 0) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+    if (minutes > 0) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+    return 'Just now';
+  };
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star
+        key={i}
+        className={`w-4 h-4 ${
+          i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
+        }`}
+      />
+    ));
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="bg-white shadow-sm fixed w-full top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+      <nav className="bg-card border-b border-border fixed w-full top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
             <div className="flex items-center">
-              <Car className="h-8 w-8 text-blue-600 mr-2" />
-              <span className="text-xl font-bold text-gray-900">Robinson's Mobile Detailing</span>
+              <Image 
+                src="/robinsons_mobile_detailing_logo.png" 
+                alt="Robinson's Mobile Detailing Logo" 
+                width={75} 
+                height={75} 
+                className="mr-3"
+              />
+              <span className="text-lg font-semibold text-foreground">Robinson's Mobile Detailing</span>
             </div>
             <div className="flex items-center space-x-4">
               <button
+                onClick={scrollToServices}
+                className="text-sm text-foreground hover:text-primary transition-colors cursor-pointer"
+              >
+                Services
+              </button>
+              <button
                 onClick={handleCall}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors flex items-center space-x-2 text-sm"
               >
                 <Phone className="w-4 h-4" />
                 <span>Call Now</span>
@@ -158,149 +258,166 @@ export default function Home(): React.ReactElement {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-gray-900 to-black">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent"></div>
-        
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-          <div className="absolute bottom-20 left-1/2 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+      <div className="pt-28 bg-gradient-to-b from-primary/10 to-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="mb-8">
             <div className="flex justify-center mb-6">
-              <div className="p-4 bg-white/10 backdrop-blur-sm rounded-full">
-                <Car className="w-16 h-16 text-white" />
+              <div className="p-3 rounded-lg">
+                <Image 
+                  src="/robinsons_mobile_detailing_logo.png" 
+                  alt="Robinson's Mobile Detailing Logo" 
+                  width={150} 
+                  height={150} 
+                />
               </div>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              Robinson's
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                Mobile Detailing
-              </span>
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Robinson's Mobile Detailing
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Professional car detailing services that come to you. Experience the difference of premium care for your vehicle.
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Here at Robinson's Mobile Detailing, we take great pride in taking care of your vehicle for a great price. Experience the difference quality car care can make today. 
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <button
               onClick={handleCall}
-              className="group bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-3"
+              className="bg-primary text-primary-foreground px-6 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center space-x-2"
             >
-              <Phone className="w-5 h-5 group-hover:animate-pulse" />
+              <Phone className="w-4 h-4" />
               <span>Call (408) 333-2639</span>
             </button>
             <button
               onClick={handleText}
-              className="group bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-3"
+              className="bg-secondary text-secondary-foreground px-6 py-3 rounded-md font-medium hover:bg-secondary/90 transition-colors flex items-center space-x-2"
             >
-              <MessageCircle className="w-5 h-5 group-hover:animate-pulse" />
+              <MessageCircle className="w-4 h-4" />
               <span>Text Us</span>
             </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <div className="text-center">
-              <div className="bg-white/10 backdrop-blur-sm rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <MapPin className="w-8 h-8 text-blue-400" />
-              </div>
-              <h3 className="text-white font-semibold mb-2">100% Mobile</h3>
-              <p className="text-gray-300">Anywhere in the Bay Area</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-white/10 backdrop-blur-sm rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Clock className="w-8 h-8 text-blue-400" />
-              </div>
-              <h3 className="text-white font-semibold mb-2">Flexible Scheduling</h3>
-              <p className="text-gray-300">7 days a week</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-white/10 backdrop-blur-sm rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Star className="w-8 h-8 text-blue-400" />
-              </div>
-              <h3 className="text-white font-semibold mb-2">Professional Results</h3>
-              <p className="text-gray-300">Premium quality guaranteed</p>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Services Section */}
-      <div className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Our Services
+      {/* Google Reviews Section */}
+      <div className="py-4 bg-muted/30">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              What Our Customers Say
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Choose from our comprehensive detailing packages designed to keep your vehicle looking its absolute best
-            </p>
+            <div className="text-center">
+            <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full">
+              <Star className="w-4 h-4 fill-current" />
+              <span className="font-medium">5.0 Average Rating</span>
+            </div>
+          </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      {review.profile_photo_url ? (
+                        <Image
+                          src={review.profile_photo_url}
+                          alt={`${review.author_name}'s profile`}
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                          <span className="text-primary font-semibold text-sm">
+                            {review.author_name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+                      <div>
+                        <h4 className="font-medium text-foreground">{review.author_name}</h4>
+                        <div className="flex items-center space-x-1">
+                          {renderStars(review.rating)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {review.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Services Section */}
+      <div id="services" className="bg-background">
+        <div className="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Our Services
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
             {services.map((service, index) => (
               <div
                 key={service.id}
-                className={`group relative bg-gradient-to-br ${
-                  index === 0 ? 'from-blue-50 to-blue-100 border-blue-200' :
-                  index === 1 ? 'from-purple-50 to-purple-100 border-purple-200' :
-                  'from-green-50 to-green-100 border-green-200'
-                } border-2 rounded-2xl p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2`}
+                className="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow"
               >
                 {index === 2 && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                  <div className="mb-4">
+                    <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium">
                       Best Value
                     </span>
                   </div>
                 )}
                 
-                <div className="text-center mb-6">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 ${
-                    index === 0 ? 'bg-blue-600 text-white' :
-                    index === 1 ? 'bg-purple-600 text-white' :
-                    'bg-green-600 text-white'
-                  }`}>
-                    {service.icon}
+                <div className="mb-6">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-primary/10 rounded-lg p-2 mr-3">
+                      {service.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-foreground">{service.name}</h3>
+                      <p className="text-sm text-muted-foreground">{service.description}</p>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.name}</h3>
-                  <p className="text-gray-600 mb-6">{service.description}</p>
                   
                   {/* Vehicle Type Pricing */}
                   <div className="space-y-2 mb-6">
-                    <div className="flex justify-between items-center px-4 py-3 bg-white/70 rounded-lg border border-white/50">
-                      <span className="text-sm font-medium text-gray-700">Coupe/Sedan</span>
-                      <span className="text-lg font-bold text-gray-900">{service.prices.coupe}</span>
+                    <div className="flex justify-between items-center py-2 border-b border-border">
+                      <span className="text-sm text-muted-foreground">Coupe/Sedan</span>
+                      <span className="font-semibold text-foreground">{service.prices.coupe}</span>
                     </div>
-                    <div className="flex justify-between items-center px-4 py-3 bg-white/70 rounded-lg border border-white/50">
-                      <span className="text-sm font-medium text-gray-700">2 Row SUV/Truck</span>
-                      <span className="text-lg font-bold text-gray-900">{service.prices.twoRow}</span>
+                    <div className="flex justify-between items-center py-2 border-b border-border">
+                      <span className="text-sm text-muted-foreground">2 Row SUV/Truck</span>
+                      <span className="font-semibold text-foreground">{service.prices.twoRow}</span>
                     </div>
-                    <div className="flex justify-between items-center px-4 py-3 bg-white/70 rounded-lg border border-white/50">
-                      <span className="text-sm font-medium text-gray-700">3 Row SUV/Minivan</span>
-                      <span className="text-lg font-bold text-gray-900">{service.prices.threeRow}</span>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="text-sm text-muted-foreground">3 Row SUV/Minivan</span>
+                      <span className="font-semibold text-foreground">{service.prices.threeRow}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Includes:</h4>
-                  <ul className="space-y-3">
+                <div className="mb-6">
+                  <h4 className="font-medium text-foreground mb-3">Includes:</h4>
+                  <ul className="space-y-2">
                     {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start space-x-3">
-                        <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                          index === 0 ? 'bg-blue-600' :
-                          index === 1 ? 'bg-purple-600' :
-                          'bg-green-600'
-                        }`}></div>
-                        <span className="text-gray-700 text-sm">{feature}</span>
+                      <li key={featureIndex} className="flex items-start space-x-2">
+                        <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 bg-primary"></div>
+                        <span className="text-sm text-muted-foreground">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -308,11 +425,7 @@ export default function Home(): React.ReactElement {
 
                 <button
                   onClick={handleCall}
-                  className={`w-full py-3 px-6 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg ${
-                    index === 0 ? 'bg-blue-600 hover:bg-blue-700 text-white' :
-                    index === 1 ? 'bg-purple-600 hover:bg-purple-700 text-white' :
-                    'bg-green-600 hover:bg-green-700 text-white'
-                  }`}
+                  className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-md font-medium hover:bg-primary/90 transition-colors text-sm"
                 >
                   Book Now - Call/Text
                 </button>
@@ -321,36 +434,33 @@ export default function Home(): React.ReactElement {
           </div>
 
           {/* Add-Ons Section */}
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-8 md:p-12 border border-gray-200">
-            <div className="text-center mb-12">
+          <div className="bg-muted/30 rounded-lg p-8 border border-border">
+            <div className="text-center mb-8">
               <div className="flex justify-center mb-4">
-                <div className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full">
-                  <Zap className="w-8 h-8 text-white" />
+                <div className="p-2 bg-primary rounded-lg">
+                  <Zap className="w-6 h-6 text-primary-foreground" />
                 </div>
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mb-2">
                 Premium Add-Ons
               </h3>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Enhance your detailing experience with our professional add-on services
-              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
               {addOns.map((addOn, index) => (
                 <div
                   key={addOn.id}
-                  className="bg-white rounded-xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-200"
+                  className="bg-card rounded-lg p-4 border border-border hover:shadow-sm transition-shadow"
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <h4 className="text-lg font-semibold text-gray-900 flex-1 pr-4 leading-tight">
+                  <div className="flex justify-between items-start mb-3">
+                    <h4 className="font-medium text-foreground flex-1 pr-3 text-sm">
                       {addOn.name}
                     </h4>
-                    <span className="text-xl font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full flex-shrink-0">
+                    <span className="font-semibold text-primary text-sm bg-primary/10 px-2 py-1 rounded flex-shrink-0">
                       {addOn.price}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {addOn.description}
                   </p>
                 </div>
@@ -358,32 +468,32 @@ export default function Home(): React.ReactElement {
             </div>
 
             {/* Mobile Service Highlight */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
+            <div className="bg-primary rounded-lg p-6 text-primary-foreground">
               <div className="text-center">
                 <div className="flex justify-center mb-4">
-                  <div className="p-3 bg-white/20 rounded-full">
-                    <MapPin className="w-8 h-8 text-white" />
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <MapPin className="w-6 h-6 text-white" />
                   </div>
                 </div>
-                <h4 className="text-2xl md:text-3xl font-bold mb-4">
+                <h4 className="text-xl font-bold mb-3">
                   100% Mobile Service
                 </h4>
-                <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto mb-6">
-                  I am 100% mobile to anywhere in the Bay Area as long as you have water and power accessible within 100 feet. Individual interior/exterior detail services are available.
+                <p className="text-sm text-primary-foreground/90 max-w-2xl mx-auto mb-6">
+                  We are 100% mobile to anywhere in the Bay Area as long as you have water and power accessible within 100 feet.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <button
                     onClick={handleCall}
-                    className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 flex items-center justify-center space-x-2"
+                    className="bg-white text-primary px-6 py-2 rounded-md font-medium hover:bg-white/90 transition-colors flex items-center justify-center space-x-2 text-sm"
                   >
-                    <Phone className="w-5 h-5" />
+                    <Phone className="w-4 h-4" />
                     <span>Call (408) 333-2639</span>
                   </button>
                   <button
                     onClick={handleText}
-                    className="bg-white/20 border border-white/30 text-white px-8 py-3 rounded-full font-semibold hover:bg-white/30 transition-all transform hover:scale-105 flex items-center justify-center space-x-2"
+                    className="bg-white/20 border border-white/30 text-white px-6 py-2 rounded-md font-medium hover:bg-white/30 transition-colors flex items-center justify-center space-x-2 text-sm"
                   >
-                    <MessageCircle className="w-5 h-5" />
+                    <MessageCircle className="w-4 h-4" />
                     <span>Text to Book</span>
                   </button>
                 </div>
@@ -394,39 +504,44 @@ export default function Home(): React.ReactElement {
       </div>
 
       {/* Call to Action Footer */}
-      <div className="bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 text-white py-16">
+      <div className="bg-card border-t border-border text-foreground py-12">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Transform Your Vehicle?
+          <h2 className="text-2xl font-bold mb-4">
+            Ready to Bring Your Vehicle Back to Life?
           </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Send me a quick text or call (408) 333-2639 to book a detail today!
+          <p className="text-muted-foreground mb-6">
+            Send us a quick text or call (408) 333-2639 to book a detail today!
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-8">
             <button
               onClick={handleCall}
-              className="group bg-white text-gray-900 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-3"
+              className="bg-primary text-primary-foreground px-6 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center space-x-2"
             >
-              <Phone className="w-5 h-5 group-hover:animate-pulse" />
+              <Phone className="w-4 h-4" />
               <span>Call (408) 333-2639</span>
             </button>
             <button
               onClick={handleText}
-              className="group bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-3"
+              className="bg-secondary text-secondary-foreground px-6 py-3 rounded-md font-medium hover:bg-secondary/90 transition-colors flex items-center space-x-2"
             >
-              <MessageCircle className="w-5 h-5 group-hover:animate-pulse" />
+              <MessageCircle className="w-4 h-4" />
               <span>Text Us</span>
             </button>
           </div>
 
-          <div className="border-t border-gray-700 pt-8">
-            <div className="flex justify-center items-center space-x-2 mb-4">
-              <Car className="h-6 w-6 text-blue-400" />
-              <span className="text-lg font-semibold">Robinson's Mobile Detailing</span>
+          <div className="border-t border-border pt-6">
+            <div className="flex justify-center items-center space-x-2 mb-2">
+              <Image 
+                src="/robinsons_mobile_detailing_logo.png" 
+                alt="Robinson's Mobile Detailing Logo" 
+                width={50} 
+                height={50} 
+              />
+              <span className="font-medium">Robinson's Mobile Detailing</span>
             </div>
-            <p className="text-gray-400">
-              Professional mobile car detailing services • San Jose, CA • Bay Area
+            <p className="text-sm text-muted-foreground">
+              San Jose, CA • Bay Area
             </p>
           </div>
         </div>
