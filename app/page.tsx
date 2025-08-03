@@ -6,6 +6,7 @@ import Image from 'next/image';
 
 interface Service {
   id: number;
+  picture: string;
   name: string;
   prices: {
     coupe: string;
@@ -19,6 +20,7 @@ interface Service {
 
 interface AddOn {
   id: number;
+  picture: string;
   name: string;
   price: string;
   description: string;
@@ -85,6 +87,7 @@ export default function Home(): React.ReactElement {
     {
       id: 1,
       name: "Interior Detail Package",
+      picture: "public/globe.svg",
       prices: {
         coupe: "$149.99",
         twoRow: "$174.99",
@@ -93,18 +96,17 @@ export default function Home(): React.ReactElement {
       description: "Complete interior deep clean and protection",
       features: [
         "Full spotless vacuum",
-        "Complete disinfection of all surfaces & UV protection",
-        "Light stain removal on carpets, floor mats, seats, plastics",
-        "High-pressure steam cleaning",
-        "Trunk cleaning",
-        "Leather conditioner INCLUDED",
-        "Pet hair removal INCLUDED"
+        "Complete disinfection of all surfaces",
+        "Stain removal on carpets, floor mats, seats, plastics",
+        "Leather conditioner",
+        "Pet hair removal"
       ],
       icon: <Car className="w-6 h-6" />
     },
     {
       id: 2,
       name: "Exterior Detail Package",
+      picture: "public/globe.svg",
       prices: {
         coupe: "$99.99",
         twoRow: "$124.99",
@@ -113,25 +115,25 @@ export default function Home(): React.ReactElement {
       description: "Professional exterior wash and protection",
       features: [
         "Professional hand wash and dry",
-        "Debug front & mirrors",
+        "Debug entire exterior",
         "Streak-free windows",
         "Wheels & tire shine",
-        "Ceramic wax protection INCLUDED"
+        "Ceramic wax protection"
       ],
       icon: <Sparkles className="w-6 h-6" />
     },
     {
       id: 3,
-      name: "FULL Interior + Exterior Package",
+      name: "Full Interior + Exterior Package",
+      picture: "public/globe.svg",
       prices: {
-        coupe: "$179.99",
-        twoRow: "$214.99",
-        threeRow: "$249.99"
+        coupe: "$199.99",
+        twoRow: "$249.99",
+        threeRow: "$299.99"
       },
       description: "Complete interior and exterior detailing service",
       features: [
-        "Everything from Interior Detail Package",
-        "Everything from Exterior Detail Package",
+        "Everything from both packages",
         "Best value for complete car care",
         "Professional-grade results inside and out",
         "Comprehensive vehicle transformation"
@@ -143,39 +145,45 @@ export default function Home(): React.ReactElement {
   const addOns: AddOn[] = [
     {
       id: 1,
+      picture: "public/globe.svg",
       name: "Engine Bay Detail",
-      price: "$50",
+      price: "$40",
       description: "Professional engine compartment cleaning and detailing"
     },
     {
       id: 2,
+      picture: "public/globe.svg",
       name: "Headlight Restoration",
       price: "$50",
-      description: "Restore clarity and brightness to foggy headlights"
+      description: "Restore clarity and brightness to both foggy headlights"
     },
     {
       id: 3,
+      picture: "public/globe.svg",
       name: "Black Trim Restoration",
       price: "$50",
       description: "Restore faded plastic trim to like-new condition"
     },
     {
       id: 4,
+      picture: "public/globe.svg",
       name: "Heavy Interior Stain Removal w/ Shampoo",
       price: "$100",
-      description: "Deep shampoo treatment for stubborn stains"
+      description: "Deep shampoo treatment on floor mats and seats for stubborn stains"
     },
     {
       id: 5,
+      picture: "public/globe.svg",
       name: "One-Step Paint Correction",
-      price: "$100",
+      price: "$150",
       description: "Clay bar decontamination + orbital buffer compound for lighter scratches & imperfections"
     },
     {
       id: 6,
+      picture: "public/globe.svg",
       name: "Two-Step Paint Correction",
-      price: "$150",
-      description: "Complete paint correction with orbital buffer polish & wax for showroom shine"
+      price: "$200",
+      description: "Everything in one-step correction + orbital buffer polish & wax for a showroom shine"
     }
   ];
 
@@ -196,19 +204,6 @@ export default function Home(): React.ReactElement {
     if (servicesSection) {
       servicesSection.scrollIntoView({ behavior: 'smooth' });
     }
-  };
-
-  const formatTimeAgo = (timestamp: number): string => {
-    const now = Date.now();
-    const diff = now - timestamp;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor(diff / (1000 * 60));
-
-    if (days > 0) return `${days} day${days === 1 ? '' : 's'} ago`;
-    if (hours > 0) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
-    if (minutes > 0) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
-    return 'Just now';
   };
 
   const renderStars = (rating: number) => {
