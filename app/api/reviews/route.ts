@@ -25,51 +25,57 @@ export async function GET(request: NextRequest) {
       const mockReviews = [
         {
           id: '1',
-          author_name: 'Sarah Johnson',
+          author_name: 'Jen',
           rating: 5,
-          text: 'Robinson did an amazing job on my car! The interior was spotless and the exterior looked brand new. Very professional and reasonably priced.',
+          text: 'Robinson came to my home on time. He detailed and washed my Volvo. He spent hours meticulously cleaning every inch of the car inside and out. When he was finished it was like having a new car all over again. As a mom of a toddler it was very convenient to have him come to my home to provide this service. I highly recommend him!',
           time: Date.now() - 86400000, // 1 day ago
-          profile_photo_url: undefined
+          profile_photo_url: '/globe.svg',
+          car_photo_url: '/globe.svg'
         },
         {
           id: '2',
-          author_name: 'Mike Chen',
+          author_name: 'Brady Tse',
           rating: 5,
-          text: 'Excellent service! My SUV looks incredible after the full detail. Robinson was punctual, professional, and the results exceeded my expectations.',
+          text: 'Just got an exterior detail done and I couldn\'t be happier with the results. The wash used premium-grade soap that left the paint looking glossy and refreshed. What really stood out was the care and knowledge that went into the process. Everything was explained step-by-step, from what each product did to how it helped protect and enhance the finish. That level of transparency and attention to detail made the experience feel really professional. When it was done, my car genuinely looked brand new again. Highly recommend to anyone who wants quality work and real pride put into the detailing. You won\'t be disappointed!',
           time: Date.now() - 172800000, // 2 days ago
-          profile_photo_url: undefined
+          profile_photo_url: '/globe.svg',
+          car_photo_url: '/globe.svg'
         },
         {
           id: '3',
-          author_name: 'Jennifer Davis',
+          author_name: 'Luke Wu',
           rating: 5,
-          text: 'Best mobile detailing service I\'ve ever used. Robinson was thorough, professional, and my car looks better than when I first bought it!',
+          text: 'Robinson made sure that the my Toyota was pristine in&out. He is a young man with an inspiring work ethic and dedication to his craft. Incredibly friendly demeanor the whole detail and is here to make money and make customers happy!',
           time: Date.now() - 259200000, // 3 days ago
-          profile_photo_url: undefined
+          profile_photo_url: '/globe.svg',
+          car_photo_url: '/globe.svg'
         },
         {
           id: '4',
-          author_name: 'David Rodriguez',
+          author_name: 'Rachel Meyer',
           rating: 5,
-          text: 'Outstanding work! My truck looks brand new. Robinson was professional, on time, and the attention to detail was incredible. Highly recommend!',
+          text: 'Robinson did 2 amazing exterior details for our cars! He was very kind, efficient, and meticulous with his work and the cars looked beautiful in the end. Thank you Robinson!! Highly recommend!!',
           time: Date.now() - 345600000, // 4 days ago
-          profile_photo_url: undefined
+          profile_photo_url: '/globe.svg',
+          car_photo_url: '/globe.svg'
         },
         {
           id: '5',
-          author_name: 'Lisa Thompson',
+          author_name: 'Kyle',
           rating: 5,
-          text: 'Amazing service! Robinson transformed my dirty car into something that looks showroom ready. Very reasonable pricing for the quality of work.',
+          text: 'Robinson replies quickly (via phone) and has put in a lot of effort into researching how to perfect his mobile detailing services. My BMW\'s leather felt like new after he vacuumed it!',
           time: Date.now() - 432000000, // 5 days ago
-          profile_photo_url: undefined
+          profile_photo_url: '/globe.svg',
+          car_photo_url: '/globe.svg'
         },
         {
           id: '6',
-          author_name: 'Robert Wilson',
+          author_name: 'Sarah Johnson',
           rating: 5,
-          text: 'Professional, thorough, and reasonably priced. Robinson did an excellent job on my vehicle. Will definitely use his services again!',
+          text: 'Robinson did an amazing job on my car! The interior was spotless and the exterior looked brand new. Very professional and reasonably priced.',
           time: Date.now() - 518400000, // 6 days ago
-          profile_photo_url: undefined
+          profile_photo_url: '/globe.svg',
+          car_photo_url: '/globe.svg'
         }
       ];
 
@@ -125,27 +131,57 @@ export async function GET(request: NextRequest) {
     const mockReviews = [
       {
         id: '1',
-        author_name: 'Sarah Johnson',
+        author_name: 'Jen',
         rating: 5,
-        text: 'Robinson did an amazing job on my car! The interior was spotless and the exterior looked brand new. Very professional and reasonably priced.',
+        text: 'Robinson came to my home on time. He detailed and washed my Volvo. He spent hours meticulously cleaning every inch of the car inside and out. When he was finished it was like having a new car all over again. As a mom of a toddler it was very convenient to have him come to my home to provide this service. I highly recommend him!',
         time: Date.now() - 86400000,
-        profile_photo_url: undefined
+        profile_photo_url: '/globe.svg',
+        car_photo_url: '/globe.svg'
       },
       {
         id: '2',
-        author_name: 'Mike Chen',
+        author_name: 'Brady Tse',
         rating: 5,
-        text: 'Excellent service! My SUV looks incredible after the full detail. Robinson was punctual, professional, and the results exceeded my expectations.',
+        text: 'Just got an exterior detail done and I couldn\'t be happier with the results. The wash used premium-grade soap that left the paint looking glossy and refreshed. What really stood out was the care and knowledge that went into the process. Everything was explained step-by-step, from what each product did to how it helped protect and enhance the finish. That level of transparency and attention to detail made the experience feel really professional. When it was done, my car genuinely looked brand new again. Highly recommend to anyone who wants quality work and real pride put into the detailing. You won\'t be disappointed!',
         time: Date.now() - 172800000,
-        profile_photo_url: undefined
+        profile_photo_url: '/globe.svg',
+        car_photo_url: '/globe.svg'
       },
       {
         id: '3',
-        author_name: 'Jennifer Davis',
+        author_name: 'Luke Wu',
         rating: 5,
-        text: 'Best mobile detailing service I\'ve ever used. Robinson was thorough, professional, and my car looks better than when I first bought it!',
+        text: 'Robinson made sure that the my Toyota was pristine in&out. He is a young man with an inspiring work ethic and dedication to his craft. Incredibly friendly demeanor the whole detail and is here to make money and make customers happy!',
         time: Date.now() - 259200000,
-        profile_photo_url: undefined
+        profile_photo_url: '/globe.svg',
+        car_photo_url: '/globe.svg'
+      },
+      {
+        id: '4',
+        author_name: 'Rachel Meyer',
+        rating: 5,
+        text: 'Robinson did 2 amazing exterior details for our cars! He was very kind, efficient, and meticulous with his work and the cars looked beautiful in the end. Thank you Robinson!! Highly recommend!!',
+        time: Date.now() - 345600000,
+        profile_photo_url: '/globe.svg',
+        car_photo_url: '/globe.svg'
+      },
+      {
+        id: '5',
+        author_name: 'Kyle',
+        rating: 5,
+        text: 'Robinson replies quickly (via phone) and has put in a lot of effort into researching how to perfect his mobile detailing services. My BMW\'s leather felt like new after he vacuumed it!',
+        time: Date.now() - 432000000,
+        profile_photo_url: '/globe.svg',
+        car_photo_url: '/globe.svg'
+      },
+      {
+        id: '6',
+        author_name: 'Sarah Johnson',
+        rating: 5,
+        text: 'Robinson did an amazing job on my car! The interior was spotless and the exterior looked brand new. Very professional and reasonably priced.',
+        time: Date.now() - 518400000,
+        profile_photo_url: '/globe.svg',
+        car_photo_url: '/globe.svg'
       }
     ];
 
