@@ -49,8 +49,8 @@ export default function Home(): React.ReactElement {
         setReviews(data.reviews);
       } catch (error) {
         console.error('Error fetching reviews:', error);
-        // Fallback to mock data if API fails
-        setReviews([
+        // Fallback to mock data if API fails - ensuring 6 reviews are shown
+        const mockReviews = [
           {
             id: '1',
             author_name: 'Jen',
@@ -105,7 +105,8 @@ export default function Home(): React.ReactElement {
             profile_photo_url: '/globe.svg',
             car_photo_url: '/globe.svg'
           }
-        ]);
+        ];
+        setReviews(mockReviews);
       } finally {
         setLoading(false);
       }
@@ -262,7 +263,7 @@ export default function Home(): React.ReactElement {
                 height={75} 
                 className="mr-3"
               />
-              <span className="text-lg font-semibold text-foreground">Robinson's Mobile Detailing</span>
+              <span className="text-lg font-semibold text-foreground hidden sm:inline">Robinson's Mobile Detailing</span>
             </div>
             <div className="flex items-center space-x-4">
               <button
@@ -354,13 +355,25 @@ export default function Home(): React.ReactElement {
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3">
                       {review.profile_photo_url ? (
-                        <Image
-                          src={review.profile_photo_url}
-                          alt={`${review.author_name}'s profile`}
-                          width={40}
-                          height={40}
-                          className="rounded-full"
-                        />
+                        <>
+                          <Image
+                            src={review.profile_photo_url}
+                            alt={`${review.author_name}'s profile`}
+                            width={40}
+                            height={40}
+                            className="rounded-full"
+                            onError={(e) => {
+                              // If profile photo fails, show fallback
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                            }}
+                          />
+                          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center hidden">
+                            <span className="text-primary font-semibold text-sm">
+                              {review.author_name.charAt(0)}
+                            </span>
+                          </div>
+                        </>
                       ) : (
                         <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                           <span className="text-primary font-semibold text-sm">
@@ -389,6 +402,11 @@ export default function Home(): React.ReactElement {
                         width={300}
                         height={200}
                         className="w-full h-48 object-cover rounded-lg"
+                        onError={(e) => {
+                          // Hide the image if it fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
                       />
                     </div>
                   )}
