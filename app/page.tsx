@@ -28,98 +28,57 @@ interface AddOn {
 
 interface Review {
   id: string;
-  author_name: string;
-  rating: number;
-  text: string;
-  time: number;
-  profile_photo_url?: string;
-  car_photo_url?: string;
+  image: string;
+  alt: string;
 }
 
 export default function Home(): React.ReactElement {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Mock reviews for now - replace with actual API call
+  // Load review screenshots from public folder
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch('/api/reviews');
-        const data = await response.json();
-        setReviews(data.reviews);
-      } catch (error) {
-        console.error('Error fetching reviews:', error);
-        // Fallback to mock data if API fails - ensuring 6 reviews are shown
-        const mockReviews = [
-          {
-            id: '1',
-            author_name: 'Jen',
-            rating: 5,
-            text: 'Robinson came to my home on time. He detailed and washed my Volvo. He spent hours meticulously cleaning every inch of the car inside and out. When he was finished it was like having a new car all over again. As a mom of a toddler it was very convenient to have him come to my home to provide this service. I highly recommend him!',
-            time: Date.now() - 86400000, // 1 day ago
-            profile_photo_url: '/globe.svg',
-            car_photo_url: '/globe.svg'
-          },
-          {
-            id: '2',
-            author_name: 'Brady Tse',
-            rating: 5,
-            text: 'Just got an exterior detail done and I couldn\'t be happier with the results. The wash used premium-grade soap that left the paint looking glossy and refreshed. What really stood out was the care and knowledge that went into the process. Everything was explained step-by-step, from what each product did to how it helped protect and enhance the finish. That level of transparency and attention to detail made the experience feel really professional. When it was done, my car genuinely looked brand new again. Highly recommend to anyone who wants quality work and real pride put into the detailing. You won\'t be disappointed!',
-            time: Date.now() - 172800000, // 2 days ago
-            profile_photo_url: '/globe.svg',
-            car_photo_url: '/globe.svg'
-          },
-          {
-            id: '3',
-            author_name: 'Luke Wu',
-            rating: 5,
-            text: 'Robinson made sure that the my Toyota was pristine in&out. He is a young man with an inspiring work ethic and dedication to his craft. Incredibly friendly demeanor the whole detail and is here to make money and make customers happy!',
-            time: Date.now() - 259200000, // 3 days ago
-            profile_photo_url: '/globe.svg',
-            car_photo_url: '/globe.svg'
-          },
-          {
-            id: '4',
-            author_name: 'Rachel Meyer',
-            rating: 5,
-            text: 'Robinson did 2 amazing exterior details for our cars! He was very kind, efficient, and meticulous with his work and the cars looked beautiful in the end. Thank you Robinson!! Highly recommend!!',
-            time: Date.now() - 345600000, // 4 days ago
-            profile_photo_url: '/globe.svg',
-            car_photo_url: '/globe.svg'
-          },
-          {
-            id: '5',
-            author_name: 'Kyle',
-            rating: 5,
-            text: 'Robinson replies quickly (via phone) and has put in a lot of effort into researching how to perfect his mobile detailing services. My BMW\'s leather felt like new after he vacuumed it!',
-            time: Date.now() - 432000000, // 5 days ago
-            profile_photo_url: '/globe.svg',
-            car_photo_url: '/globe.svg'
-          },
-          {
-            id: '6',
-            author_name: 'Sarah Johnson',
-            rating: 5,
-            text: 'Robinson did an amazing job on my car! The interior was spotless and the exterior looked brand new. Very professional and reasonably priced.',
-            time: Date.now() - 518400000, // 6 days ago
-            profile_photo_url: '/globe.svg',
-            car_photo_url: '/globe.svg'
-          }
-        ];
-        setReviews(mockReviews);
-      } finally {
-        setLoading(false);
+    const reviewScreenshots = [
+      {
+        id: '1',
+        image: '/billyreview.png',
+        alt: 'Review from Billy'
+      },
+      {
+        id: '2',
+        image: '/dogpoop_review.png',
+        alt: 'Review screenshot'
+      },
+      {
+        id: '3',
+        image: '/jasonreview.png',
+        alt: 'Review from Jason'
+      },
+      {
+        id: '4',
+        image: '/jenreview.png',
+        alt: 'Review from Jen'
+      },
+      {
+        id: '5',
+        image: '/kathleenreview.png',
+        alt: 'Review from Kathleen'
+      },
+      {
+        id: '6',
+        image: '/rachelreview.png',
+        alt: 'Review from Rachel'
       }
-    };
-
-    fetchReviews();
+    ];
+    setReviews(reviewScreenshots);
+    setLoading(false);
   }, []);
 
   const services: Service[] = [
     {
       id: 1,
       name: "Interior Detail Package",
-      picture: "public/globe.svg",
+      picture: "/interior_detail.png",
       prices: {
         coupe: "$199.99",
         twoRow: "$224.99",
@@ -138,7 +97,7 @@ export default function Home(): React.ReactElement {
     {
       id: 2,
       name: "Exterior Detail Package",
-      picture: "public/globe.svg",
+      picture: "/exterior_detail.png",
       prices: {
         coupe: "$149.99",
         twoRow: "$174.99",
@@ -157,7 +116,7 @@ export default function Home(): React.ReactElement {
     {
       id: 3,
       name: "Full Interior + Exterior Package",
-      picture: "public/globe.svg",
+      picture: "/full_interior_exterior_detail.png",
       prices: {
         coupe: "$249.99",
         twoRow: "$299.99",
@@ -177,42 +136,42 @@ export default function Home(): React.ReactElement {
   const addOns: AddOn[] = [
     {
       id: 1,
-      picture: "public/globe.svg",
+      picture: "/engine_bay_detailing.png",
       name: "Engine Bay Detail",
       price: "$40",
       description: "Professional engine compartment cleaning and detailing"
     },
     {
       id: 2,
-      picture: "public/globe.svg",
+      picture: "/headlight-restoration.png",
       name: "Headlight Restoration",
       price: "$50",
       description: "Restore clarity and brightness to both foggy headlights"
     },
     {
       id: 3,
-      picture: "public/globe.svg",
+      picture: "/black-trim-restoration.png",
       name: "Black Trim Restoration",
       price: "$50",
       description: "Restore faded plastic trim to like-new condition"
     },
     {
       id: 4,
-      picture: "public/globe.svg",
+      picture: "/full_interior_shampoo.png",
       name: "Heavy Interior Stain Removal w/ Shampoo",
       price: "$100",
       description: "Deep shampoo treatment on floor mats and seats for stubborn stains"
     },
     {
       id: 5,
-      picture: "public/globe.svg",
+      picture: "/1-step-paint-correction.png",
       name: "One-Step Paint Correction",
       price: "$150",
       description: "Clay bar decontamination + orbital buffer compound for lighter scratches & imperfections"
     },
     {
       id: 6,
-      picture: "public/globe.svg",
+      picture: "/two-step-paint-correction.png",
       name: "Two-Step Paint Correction",
       price: "$200",
       description: "Everything in one-step correction + orbital buffer polish & wax for a showroom shine"
@@ -238,16 +197,6 @@ export default function Home(): React.ReactElement {
     }
   };
 
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={`w-4 h-4 ${
-          i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-        }`}
-      />
-    ));
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -302,7 +251,7 @@ export default function Home(): React.ReactElement {
               Robinson's Mobile Detailing
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Here at Robinson's Mobile Detailing, we take great pride in taking care of your vehicle for a great price. Experience the difference quality car care can make today. 
+              Here at Robinson's Mobile Detailing, we take great pride in restoring vehicles back to their showroom condition, inside and out. Just as importantly, we care about you and other members of our community, so schedule your detail and experience the difference that quality car care can make. 
             </p>
           </div>
 
@@ -350,66 +299,18 @@ export default function Home(): React.ReactElement {
               {reviews.map((review) => (
                 <div
                   key={review.id}
-                  className="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow"
+                  className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow"
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      {review.profile_photo_url ? (
-                        <>
-                          <Image
-                            src={review.profile_photo_url}
-                            alt={`${review.author_name}'s profile`}
-                            width={40}
-                            height={40}
-                            className="rounded-full"
-                            onError={(e) => {
-                              // If profile photo fails, show fallback
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = 'none';
-                            }}
-                          />
-                          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center hidden">
-                            <span className="text-primary font-semibold text-sm">
-                              {review.author_name.charAt(0)}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                          <span className="text-primary font-semibold text-sm">
-                            {review.author_name.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-                      <div>
-                        <h4 className="font-medium text-foreground">{review.author_name}</h4>
-                        <div className="flex items-center space-x-1">
-                          {renderStars(review.rating)}
-                        </div>
-                      </div>
-                    </div>
+                  <div className="relative w-full">
+                    <Image
+                      src={review.image}
+                      alt={review.alt}
+                      width={400}
+                      height={600}
+                      className="w-full h-auto object-contain"
+                      unoptimized
+                    />
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    {review.text}
-                  </p>
-                  
-                  {/* Car Photo Display */}
-                  {review.car_photo_url && (
-                    <div className="mt-4">
-                      <Image
-                        src={review.car_photo_url}
-                        alt={`${review.author_name}'s car after detailing`}
-                        width={300}
-                        height={200}
-                        className="w-full h-48 object-cover rounded-lg"
-                        onError={(e) => {
-                          // Hide the image if it fails to load
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
-                      />
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -437,6 +338,18 @@ export default function Home(): React.ReactElement {
                     <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium">
                       Best Value
                     </span>
+                  </div>
+                )}
+                
+                {service.picture && (
+                  <div className="mb-4">
+                    <Image
+                      src={service.picture}
+                      alt={service.name}
+                      width={400}
+                      height={250}
+                      className="w-full h-48 object-cover rounded-lg"
+                    />
                   </div>
                 )}
                 
@@ -509,6 +422,17 @@ export default function Home(): React.ReactElement {
                   key={addOn.id}
                   className="bg-card rounded-lg p-4 border border-border hover:shadow-sm transition-shadow"
                 >
+                  {addOn.picture && (
+                    <div className="mb-3">
+                      <Image
+                        src={addOn.picture}
+                        alt={addOn.name}
+                        width={300}
+                        height={200}
+                        className="w-full h-32 object-cover rounded-lg"
+                      />
+                    </div>
+                  )}
                   <div className="flex justify-between items-start mb-3">
                     <h4 className="font-medium text-foreground flex-1 pr-3 text-sm">
                       {addOn.name}
