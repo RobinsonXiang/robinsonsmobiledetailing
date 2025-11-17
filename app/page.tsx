@@ -251,7 +251,7 @@ export default function Home(): React.ReactElement {
               Robinson's Mobile Detailing
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Here at Robinson's Mobile Detailing, we take great pride in restoring vehicles back to their showroom condition, inside and out. We believe that each car and its owner holds a story, one that we strive to uncover and understand for every detail. Call or text us and experience the difference that quality car care can make today! 
+              Here at Robinson's Mobile Detailing, we take great pride in restoring vehicles back to their showroom condition, inside and out. We believe that each car and its owner holds a story, and we strive to uncover and understand that story before every detail. Call or text us and experience the difference that quality car care can make today! 
             </p>
           </div>
 
