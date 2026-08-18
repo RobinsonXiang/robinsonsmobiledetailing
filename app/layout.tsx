@@ -9,7 +9,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Robinson's Mobile Detailing - Professional Car Detailing Services",
-  description: "Professional mobile car detailing services in the Bay Area. Interior, exterior, and full detail packages. Call (408) 333-2639 to book your appointment today!",
+  description: "Professional mobile car detailing services in the Bay Area. Interior, exterior, and full detail packages. Call (408) 529-7443 to book your appointment today!",
   icons: {
     icon: [
       { url: '/robinsons_mobile_detailing_logo.png', sizes: '32x32', type: 'image/png' },

@@ -180,13 +180,13 @@ export default function Home(): React.ReactElement {
 
   const handleCall = (): void => {
     if (typeof window !== 'undefined') {
-      window.open('tel:408-333-2639', '_self');
+      window.open('tel:408-529-7443', '_self');
     }
   };
 
   const handleText = (): void => {
     if (typeof window !== 'undefined') {
-      window.open('sms:408-333-2639', '_self');
+      window.open('sms:408-529-7443', '_self');
     }
   };
 
@@ -261,7 +261,7 @@ export default function Home(): React.ReactElement {
               className="bg-primary text-primary-foreground px-6 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center space-x-2"
             >
               <Phone className="w-4 h-4" />
-              <span>Call (408) 333-2639</span>
+              <span>Call (408) 529-7443</span>
             </button>
             <button
               onClick={handleText}
@@ -468,7 +468,7 @@ export default function Home(): React.ReactElement {
                     className="bg-white text-primary px-6 py-2 rounded-md font-medium hover:bg-white/90 transition-colors flex items-center justify-center space-x-2 text-sm"
                   >
                     <Phone className="w-4 h-4" />
-                    <span>Call (408) 333-2639</span>
+                    <span>Call (408) 529-7443</span>
                   </button>
                   <button
                     onClick={handleText}
@@ -491,7 +491,7 @@ export default function Home(): React.ReactElement {
             Ready to Bring Your Vehicle Back to Life?
           </h2>
           <p className="text-muted-foreground mb-6">
-            Send us a quick text or call (408) 333-2639 to book a detail today!
+            Send us a quick text or call (408) 529-7443 to book a detail today!
           </p>
           
           <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-8">
@@ -500,7 +500,7 @@ export default function Home(): React.ReactElement {
               className="bg-primary text-primary-foreground px-6 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center space-x-2"
             >
               <Phone className="w-4 h-4" />
-              <span>Call (408) 333-2639</span>
+              <span>Call (408) 529-7443</span>
             </button>
             <button
               onClick={handleText}
