@@ -250,8 +250,11 @@ export default function Home(): React.ReactElement {
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               Robinson's Mobile Detailing
             </h1>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              I started Robinson’s Mobile Detailing while I was still in high school, hoping to do my part to help carry some of the burden for my family. What began as a small way to contribute soon became something much more meaningful—a business built on hard work, trust, and the relationships I’ve formed with every customer along the way. Now, as I begin college in the fall of 2026, I’m proud to continue that journey and keep growing the business that has already taught me so much. At Robinson’s Mobile Detailing, we take great pride in restoring every vehicle as close as possible to its showroom condition, inside and out. I believe every car—and every owner—has a story, and I try to understand that story and treat each vehicle with the care it deserves. To everyone who has trusted and supported me along the way: thank you for being part of this journey. Call or text us today, and experience the difference that genuine care, hard work, and attention to detail can make.Here at Robinson's Mobile Detailing, we take great pride in restoring vehicles back to their showroom condition, inside and out. We believe that each car and its owner holds a story, and we strive to uncover and understand that story before every detail. Call or text us and experience the difference that quality car care can make today! 
+            <p className="text-lg text-muted-foreground mb-4 max-w-4xl mx-auto text-left">
+              I started Robinson’s Mobile Detailing in high school to help support my family. What began as a small way to contribute grew into a business built on hard work, trust, and genuine care for every customer. Now, as I begin college in fall 2026, I’m proud to continue that journey.
+            </p>
+            <p className="text-lg text-muted-foreground mb-8 max-w-4xl mx-auto text-left">
+              At Robinson’s Mobile Detailing, we treat every vehicle like it has a story worth caring for. From interior to exterior, we take pride in bringing cars back to their best. Call or text us today and experience the difference quality car care can make.
             </p>
           </div>
 
